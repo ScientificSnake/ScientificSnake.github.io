@@ -165,7 +165,9 @@
     </div>
 
     <script>
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEi5qY_45WS4L49m0GA471jLSZOH9Ub57NdApZIiFRSbKsTUp_PJMzUbIbvRTfKG7CSSVyfUOK48nr/pub?gid=0&single=true&output=csv';
+        const ogCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEi5qY_45WS4L49m0GA471jLSZOH9Ub57NdApZIiFRSbKsTUp_PJMzUbIbvRTfKG7CSSVyfUOK48nr/pub?gid=0&single=true&output=csv';
+        const CsvURL = 'https://corsproxy.io/?' + encodeURIComponent(ogCsvUrl)
+
         const eventList = document.getElementById('event-list');
         const eventDialog = document.getElementById('event-dialog');
         const closeDialogButton = document.getElementById('event-dialog-close');
