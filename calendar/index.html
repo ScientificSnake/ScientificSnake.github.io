@@ -162,9 +162,15 @@
                 <p class="event-dialog-signup">Enter Contact Info in sheet to sign up</p>
             </section>
             <section class="event-dialog-sheet" aria-label="Event signup sheet">
-                <iframe id="event-sheet-frame" title="Event signup sheet" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div id="event-sheet-frame-wrap" class="event-sheet-frame-wrap" hidden>
+                    <iframe id="event-sheet-frame" title="Event signup sheet" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <p id="event-sheet-loading" class="event-sheet-loading" role="status" aria-live="polite">
+                        <span class="event-sheet-spinner" aria-hidden="true"></span>
+                        Loading signup content…
+                    </p>
+                </div>
                 <p id="event-sheet-message" class="event-sheet-message" hidden>Signup sheet is not available for this event.</p>
-                <p id="event-sheet-readonly" class="event-sheet-note" hidden>This published sheet is read-only. Use an editable Google Sheets /edit link and grant edit access to allow sign-ups.</p>
+                <p id="event-sheet-readonly" class="event-sheet-note" hidden>Some websites block embedding. If the content does not appear, use “Open link in a new tab.” <br> If all else fails, feel free to contact and officer!</p>
                 <a id="event-sheet-open" class="event-sheet-open" target="_blank" rel="noopener noreferrer" hidden>
                     <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
                     Open link in a new tab
@@ -184,6 +190,8 @@
         const dialogDate = document.getElementById('event-dialog-date');
         const dialogDescription = document.getElementById('event-dialog-description');
         const sheetFrame = document.getElementById('event-sheet-frame');
+        const sheetFrameWrap = document.getElementById('event-sheet-frame-wrap');
+        const sheetLoading = document.getElementById('event-sheet-loading');
         const sheetMessage = document.getElementById('event-sheet-message');
         const sheetReadonlyNote = document.getElementById('event-sheet-readonly');
         const sheetOpenLink = document.getElementById('event-sheet-open');
@@ -253,7 +261,7 @@
 
             try {
                 const url = new URL(source);
-                if (url.protocol !== 'https:' || url.hostname !== 'docs.google.com') return '';
+                if (url.protocol !== 'https:' || !url.hostname || url.username || url.password) return '';
                 return url.href;
             } catch {
                 return '';
@@ -273,17 +281,22 @@
             dialogDescription.textContent = eventDetails.description;
 
             const sheetUrl = getSheetEmbedUrl(eventDetails.link);
-            const canEditSheet = sheetUrl.includes('/edit');
-            sheetFrame.hidden = !sheetUrl;
+            sheetFrameWrap.hidden = !sheetUrl;
+            sheetLoading.hidden = !sheetUrl;
             sheetMessage.hidden = Boolean(sheetUrl);
-            sheetReadonlyNote.hidden = !sheetUrl || canEditSheet;
+            sheetReadonlyNote.hidden = !sheetUrl;
             sheetOpenLink.hidden = !sheetUrl;
             if (sheetUrl) {
                 sheetOpenLink.href = sheetUrl;
+                sheetFrame.onload = () => {
+                    sheetLoading.hidden = true;
+                };
+                sheetFrame.src = sheetUrl;
             } else {
                 sheetOpenLink.removeAttribute('href');
+                sheetFrame.onload = null;
+                sheetFrame.removeAttribute('src');
             }
-            if (sheetUrl) sheetFrame.src = sheetUrl;
 
             eventDialog.hidden = false;
             eventDialog.setAttribute('aria-hidden', 'false');
@@ -297,6 +310,10 @@
         function closeEventDialog() {
             eventDialog.hidden = true;
             eventDialog.setAttribute('aria-hidden', 'true');
+            sheetFrame.onload = null;
+            sheetFrame.removeAttribute('src');
+            sheetFrameWrap.hidden = true;
+            sheetLoading.hidden = true;
             document.body.classList.remove('event-dialog-open');
             document.querySelectorAll('body > header, body > section').forEach(element => {
                 element.inert = false;
