@@ -366,7 +366,7 @@
                     }))
                     .filter(event => event.date && event.date.getTime() > now && event.name)
                     .sort((first, second) => first.date - second.date)
-                    .slice(0, 3);
+                    .slice(0, 6);
 
                 renderEvents(events);
             } catch (error) {
