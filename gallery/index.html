@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F1XJBZG8FS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-F1XJBZG8FS');
+    </script>
+    <title>Gallery | Century High School Key Club</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+    <link rel="manifest" href="../site.webmanifest">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: '#002855',
+                        gold: '#F2A900',
+                        light: '#F8F9FA'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .gallery-slide {
+            min-height: 32rem;
+        }
+
+        .gallery-slide img {
+            object-position: center;
+        }
+
+        .album-dialog {
+            width: min(58rem, calc(100% - 2rem));
+            max-height: min(90vh, 52rem);
+            border: 0;
+            border-radius: 1.25rem;
+            padding: 0;
+            color: #1f2937;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .album-dialog::backdrop {
+            background: rgba(0, 12, 26, 0.75);
+            backdrop-filter: blur(4px);
+        }
+
+        .album-dialog-content {
+            max-height: min(90vh, 52rem);
+            overflow-y: auto;
+        }
+
+        .album-photo {
+            aspect-ratio: 4 / 3;
+        }
+
+        @media (max-width: 640px) {
+            .gallery-slide {
+                min-height: 28rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-light text-gray-800 font-sans antialiased overflow-x-hidden">
+    <header class="glass-nav fixed w-full top-0 z-50 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="../index.html" class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center p-1 border-2 border-gold">
+                        <img src="../images/turtleicon.png" alt="Key Club Logo" class="w-full h-full object-contain rounded-full">
+                    </div>
+                    <div>
+                        <span class="font-bold text-xl tracking-tight block">Century High School</span>
+                        <span class="text-gold font-semibold text-sm tracking-wider uppercase">Key Club</span>
+                    </div>
+                </a>
+
+                <nav class="hidden md:flex space-x-8" aria-label="Main navigation">
+                    <a href="../index.html#home" class="text-white hover:text-gold font-medium transition-colors">Home</a>
+                    <a href="../index.html#about" class="text-white hover:text-gold font-medium transition-colors">About Us</a>
+                    <a href="../index.html#officers" class="text-white hover:text-gold font-medium transition-colors">Officers</a>
+                    <a href="../calendar/" class="text-white hover:text-gold font-medium transition-colors">Calendar</a>
+                    <a href="./" aria-current="page" class="text-gold font-medium">Gallery</a>
+                </nav>
+
+                <button id="mobile-menu-btn" type="button" class="md:hidden text-white hover:text-gold focus:outline-none p-2"
+                    aria-label="Toggle navigation" aria-controls="mobile-menu" aria-expanded="false">
+                    <i class="fas fa-bars text-2xl" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <nav id="mobile-menu" class="hidden md:hidden bg-navy border-t border-blue-900" aria-label="Mobile navigation">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#home" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">Home</a>
+                <a href="../index.html#about" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">About Us</a>
+                <a href="../index.html#officers" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">Officers</a>
+                <a href="../calendar/" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">Calendar</a>
+                <a href="./" aria-current="page" class="block px-3 py-2 rounded-md text-base font-medium text-gold hover:bg-blue-900">Gallery</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-20">
+        <section class="relative bg-navy text-white" aria-label="Featured gallery slideshow">
+            <div id="gallery-slides" class="relative">
+                <article class="gallery-slide relative flex items-center overflow-hidden" data-slide>
+                    <img src="../images/centurybg.jpg" alt="" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/60 to-navy/20"></div>
+                    <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-16">
+                        <span class="text-gold font-bold uppercase tracking-[0.2em] text-sm">Moments that matter</span>
+                        <h1 class="mt-4 text-4xl sm:text-6xl font-extrabold max-w-2xl">A year of serving together</h1>
+                        <p class="mt-5 text-lg sm:text-xl text-gray-200 max-w-xl">Take a look back at the people, projects, and memories that make Key Club special.</p>
+                    </div>
+                </article>
+                <article class="gallery-slide relative hidden items-center overflow-hidden" data-slide hidden>
+                    <img src="../images/oldkc.png" alt="" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/70 to-navy/30"></div>
+                    <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-16">
+                        <span class="text-gold font-bold uppercase tracking-[0.2em] text-sm">Our community</span>
+                        <h2 class="mt-4 text-4xl sm:text-6xl font-extrabold max-w-2xl">Small acts, big impact</h2>
+                        <p class="mt-5 text-lg sm:text-xl text-gray-200 max-w-xl">Every event is a chance to lend a hand and make a difference.</p>
+                    </div>
+                </article>
+                <article class="gallery-slide relative hidden items-center overflow-hidden" data-slide hidden>
+                    <img src="../images/centurybg.jpg" alt="" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/60 to-navy/20"></div>
+                    <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-16">
+                        <span class="text-gold font-bold uppercase tracking-[0.2em] text-sm">Made together</span>
+                        <h2 class="mt-4 text-4xl sm:text-6xl font-extrabold max-w-2xl">Good times, great cause</h2>
+                        <p class="mt-5 text-lg sm:text-xl text-gray-200 max-w-xl">Browse the albums below to revisit a few of our favorite events.</p>
+                    </div>
+                </article>
+            </div>
+            <div class="absolute bottom-6 left-0 right-0 z-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                    <div id="gallery-slide-dots" class="flex gap-2" aria-label="Choose a slide"></div>
+                    <div class="flex gap-2">
+                        <button id="gallery-previous" type="button" aria-label="Previous slide"
+                            class="w-11 h-11 rounded-full border border-white/70 text-white hover:bg-white hover:text-navy transition-colors">
+                            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                        </button>
+                        <button id="gallery-next" type="button" aria-label="Next slide"
+                            class="w-11 h-11 rounded-full border border-white/70 text-white hover:bg-white hover:text-navy transition-colors">
+                            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 sm:py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-2xl mb-10">
+                    <p class="text-gold font-bold uppercase tracking-[0.18em] text-sm">From our albums</p>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-navy mt-2">Event folders</h2>
+                    <p class="text-gray-600 mt-3 text-lg">Choose an album to see photos and a little more about the event.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <button type="button" data-album="fall-food-drive"
+                        class="group text-left bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow focus-visible:outline focus-visible:outline-4 focus-visible:outline-gold">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-navy">
+                            <img src="../images/centurybg.jpg" alt="Placeholder preview for the Fall Food Drive album" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-4 left-4 rounded-full bg-white/95 text-navy text-xs font-bold uppercase tracking-wider px-3 py-1.5">Service</span>
+                        </div>
+                        <span class="block p-5">
+                            <span class="block text-xl font-bold text-navy">Fall Food Drive</span>
+                            <span class="block mt-1 text-gray-500">Community service · 8 photos</span>
+                        </span>
+                    </button>
+
+                    <button type="button" data-album="winter-social"
+                        class="group text-left bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow focus-visible:outline focus-visible:outline-4 focus-visible:outline-gold">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-navy">
+                            <img src="../images/oldkc.png" alt="Placeholder preview for the Winter Social album" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-4 left-4 rounded-full bg-white/95 text-navy text-xs font-bold uppercase tracking-wider px-3 py-1.5">Club life</span>
+                        </div>
+                        <span class="block p-5">
+                            <span class="block text-xl font-bold text-navy">Winter Social</span>
+                            <span class="block mt-1 text-gray-500">Member gathering · 6 photos</span>
+                        </span>
+                    </button>
+
+                    <button type="button" data-album="spring-cleanup"
+                        class="group text-left bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow focus-visible:outline focus-visible:outline-4 focus-visible:outline-gold">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-navy">
+                            <img src="../images/centurybg.jpg" alt="Placeholder preview for the Spring Cleanup album" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-4 left-4 rounded-full bg-white/95 text-navy text-xs font-bold uppercase tracking-wider px-3 py-1.5">Service</span>
+                        </div>
+                        <span class="block p-5">
+                            <span class="block text-xl font-bold text-navy">Spring Cleanup</span>
+                            <span class="block mt-1 text-gray-500">Neighborhood project · 5 photos</span>
+                        </span>
+                    </button>
+
+                    <button type="button" data-album="school-supply-drive"
+                        class="group text-left bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow focus-visible:outline focus-visible:outline-4 focus-visible:outline-gold">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-navy">
+                            <img src="../images/oldkc.png" alt="Placeholder preview for the School Supply Drive album" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-4 left-4 rounded-full bg-white/95 text-navy text-xs font-bold uppercase tracking-wider px-3 py-1.5">Fundraiser</span>
+                        </div>
+                        <span class="block p-5">
+                            <span class="block text-xl font-bold text-navy">School Supply Drive</span>
+                            <span class="block mt-1 text-gray-500">Donation project · 7 photos</span>
+                        </span>
+                    </button>
+
+                    <button type="button" data-album="leadership-retreat"
+                        class="group text-left bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow focus-visible:outline focus-visible:outline-4 focus-visible:outline-gold">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-navy">
+                            <img src="../images/centurybg.jpg" alt="Placeholder preview for the Leadership Retreat album" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-4 left-4 rounded-full bg-white/95 text-navy text-xs font-bold uppercase tracking-wider px-3 py-1.5">Leadership</span>
+                        </div>
+                        <span class="block p-5">
+                            <span class="block text-xl font-bold text-navy">Leadership Retreat</span>
+                            <span class="block mt-1 text-gray-500">Team building · 4 photos</span>
+                        </span>
+                    </button>
+
+                    <button type="button" data-album="community-fair"
+                        class="group text-left bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow focus-visible:outline focus-visible:outline-4 focus-visible:outline-gold">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-navy">
+                            <img src="../images/oldkc.png" alt="Placeholder preview for the Community Fair album" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-4 left-4 rounded-full bg-white/95 text-navy text-xs font-bold uppercase tracking-wider px-3 py-1.5">Community</span>
+                        </div>
+                        <span class="block p-5">
+                            <span class="block text-xl font-bold text-navy">Community Fair</span>
+                            <span class="block mt-1 text-gray-500">Outreach event · 6 photos</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-navy border-t-[8px] border-gold py-8 text-center text-gray-300">
+        <a href="../index.html" class="hover:text-gold transition-colors">&copy; 2026 Century High School Key Club</a>
+    </footer>
+
+    <dialog id="album-dialog" class="album-dialog" aria-labelledby="album-title">
+        <div class="album-dialog-content">
+            <div class="sticky top-0 z-10 flex justify-end bg-white/95 p-3">
+                <button id="album-close" type="button" aria-label="Close photo album"
+                    class="w-10 h-10 rounded-full text-navy hover:bg-gray-100 text-3xl leading-none">&times;</button>
+            </div>
+            <div class="px-5 sm:px-8 pb-8">
+                <p class="text-gold font-bold uppercase tracking-[0.18em] text-sm">Event album</p>
+                <h2 id="album-title" class="text-3xl sm:text-4xl font-extrabold text-navy mt-2"></h2>
+                <p id="album-description" class="mt-3 text-gray-600 leading-relaxed"></p>
+                <div id="album-photos" class="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        const menuButton = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuButton.addEventListener('click', () => {
+            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+            menuButton.setAttribute('aria-expanded', String(!isExpanded));
+            mobileMenu.classList.toggle('hidden', isExpanded);
+        });
+
+        mobileMenu.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuButton.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        const slides = Array.from(document.querySelectorAll('[data-slide]'));
+        const slideDots = document.getElementById('gallery-slide-dots');
+        let currentSlide = 0;
+
+        const showSlide = (index) => {
+            currentSlide = (index + slides.length) % slides.length;
+            slides.forEach((slide, slideIndex) => {
+                const isActive = slideIndex === currentSlide;
+                slide.hidden = !isActive;
+                slide.classList.toggle('flex', isActive);
+                slide.classList.toggle('hidden', !isActive);
+                slideDots.children[slideIndex].classList.toggle('bg-white', isActive);
+                slideDots.children[slideIndex].setAttribute('aria-current', String(isActive));
+            });
+        };
+
+        slides.forEach((_, index) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.setAttribute('aria-label', `Show slide ${index + 1}`);
+            dot.className = 'w-3 h-3 rounded-full border border-white transition-colors';
+            dot.addEventListener('click', () => showSlide(index));
+            slideDots.append(dot);
+        });
+
+        document.getElementById('gallery-previous').addEventListener('click', () => showSlide(currentSlide - 1));
+        document.getElementById('gallery-next').addEventListener('click', () => showSlide(currentSlide + 1));
+        showSlide(0);
+
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            window.setInterval(() => showSlide(currentSlide + 1), 6000);
+        }
+
+        const albums = {
+            'fall-food-drive': {
+                title: 'Fall Food Drive',
+                description: 'Members collected pantry staples for local families and helped organize donations for the community. This album uses placeholder photos until event pictures are added.',
+                photos: ['../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png']
+            },
+            'winter-social': {
+                title: 'Winter Social',
+                description: 'A chance for members to connect, celebrate the season, and welcome new friends to the club. This album uses placeholder photos until event pictures are added.',
+                photos: ['../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg']
+            },
+            'spring-cleanup': {
+                title: 'Spring Cleanup',
+                description: 'Club members teamed up to care for shared spaces and make the neighborhood a little brighter. This album uses placeholder photos until event pictures are added.',
+                photos: ['../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg']
+            },
+            'school-supply-drive': {
+                title: 'School Supply Drive',
+                description: 'Members gathered supplies to help students start the school year ready to learn. This album uses placeholder photos until event pictures are added.',
+                photos: ['../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png']
+            },
+            'leadership-retreat': {
+                title: 'Leadership Retreat',
+                description: 'Members practiced leadership, planned service projects, and built stronger connections as a team. This album uses placeholder photos until event pictures are added.',
+                photos: ['../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png']
+            },
+            'community-fair': {
+                title: 'Community Fair',
+                description: 'Our club shared its mission and connected with neighbors at a local community event. This album uses placeholder photos until event pictures are added.',
+                photos: ['../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg', '../images/oldkc.png', '../images/centurybg.jpg']
+            }
+        };
+
+        const albumDialog = document.getElementById('album-dialog');
+        const albumPhotos = document.getElementById('album-photos');
+
+        document.querySelectorAll('[data-album]').forEach((card) => {
+            card.addEventListener('click', () => {
+                const album = albums[card.dataset.album];
+                document.getElementById('album-title').textContent = album.title;
+                document.getElementById('album-description').textContent = album.description;
+
+                const photoElements = album.photos.map((src, index) => {
+                    const figure = document.createElement('figure');
+                    figure.className = 'album-photo overflow-hidden rounded-xl bg-gray-100';
+
+                    const image = document.createElement('img');
+                    image.src = src;
+                    image.alt = `${album.title} placeholder photo ${index + 1}`;
+                    image.className = 'w-full h-full object-cover';
+                    figure.append(image);
+                    return figure;
+                });
+
+                albumPhotos.replaceChildren(...photoElements);
+                albumDialog.showModal();
+            });
+        });
+
+        document.getElementById('album-close').addEventListener('click', () => albumDialog.close());
+        albumDialog.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                albumDialog.close();
+            }
+        });
+        albumDialog.addEventListener('click', (event) => {
+            if (event.target === albumDialog) {
+                albumDialog.close();
+            }
+        });
+    </script>
+</body>
+
+</html>
