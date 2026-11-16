@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+    <script>
+        const testPageAccessKey = 'testPageAccess';
+        if (sessionStorage.getItem(testPageAccessKey) === 'granted') {
+            sessionStorage.removeItem(testPageAccessKey);
+        } else {
+            document.documentElement.hidden = true;
+            window.location.replace('../off_panel/');
+        }
+    </script>
     <!-- Vendored acorn 8.14.0 + acorn-walk 8.3.4 (MIT), minified. Powers the
          AST-based location rewriter in the page renderer (see rewriteLocationRefs).
          Exposes window.acorn and window.acorn.walk. -->
