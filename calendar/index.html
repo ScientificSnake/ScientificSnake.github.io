@@ -3,15 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F1XJBZG8FS"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-F1XJBZG8FS');
-    </script>
     <title>Calendar | Century High School Key Club</title>
 
     <!-- FontAwesome for Icons -->
@@ -61,7 +52,7 @@
                     <a href="../index.html#about" class="text-white hover:text-gold font-medium transition-colors">About Us</a>
                     <a href="../index.html#officers" class="text-white hover:text-gold font-medium transition-colors">Officers</a>
                     <a href="index.html" class="text-white hover:text-gold font-medium transition-colors">Calendar</a>
-                    <a href="../gallery/" class="text-white hover:text-gold font-medium transition-colors">Gallery</a>
+                    <a href="../index.html#gallery" class="text-white hover:text-gold font-medium transition-colors">Gallery</a>
                 </nav>
 
                 <!-- CTA Button (Desktop)
@@ -88,7 +79,7 @@
                 <a href="../index.html#about" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">About Us</a>
                 <a href="../index.html#officers" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">Officers</a>
                 <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">Calendar</a>
-                <a href="../gallery/" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">Gallery</a>
+                <a href="../index.html#gallery" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gold hover:bg-blue-900">Gallery</a>
                 <a href="../index.html#join" class="block px-3 py-2 mt-4 text-center rounded-md text-base font-bold text-navy bg-gold hover:bg-yellow-400"><i class="fas fa-user-plus mr-2" aria-hidden="true"></i>Join Us</a>
             </div>
         </div>
@@ -162,15 +153,9 @@
                 <p class="event-dialog-signup">Enter Contact Info in sheet to sign up</p>
             </section>
             <section class="event-dialog-sheet" aria-label="Event signup sheet">
-                <div id="event-sheet-frame-wrap" class="event-sheet-frame-wrap" hidden>
-                    <iframe id="event-sheet-frame" title="Event signup sheet" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    <p id="event-sheet-loading" class="event-sheet-loading" role="status" aria-live="polite">
-                        <span class="event-sheet-spinner" aria-hidden="true"></span>
-                        Loading signup content…
-                    </p>
-                </div>
+                <iframe id="event-sheet-frame" title="Event signup sheet" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <p id="event-sheet-message" class="event-sheet-message" hidden>Signup sheet is not available for this event.</p>
-                <p id="event-sheet-readonly" class="event-sheet-note" hidden>Some websites block embedding. If the content does not appear, use “Open link in a new tab.” <br> If all else fails, feel free to contact and officer!</p>
+                <p id="event-sheet-readonly" class="event-sheet-note" hidden>This published sheet is read-only. Use an editable Google Sheets /edit link and grant edit access to allow sign-ups.</p>
                 <a id="event-sheet-open" class="event-sheet-open" target="_blank" rel="noopener noreferrer" hidden>
                     <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
                     Open link in a new tab
@@ -181,7 +166,6 @@
 
     <script>
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEi5qY_45WS4L49m0GA471jLSZOH9Ub57NdApZIiFRSbKsTUp_PJMzUbIbvRTfKG7CSSVyfUOK48nr/pub?gid=0&single=true&output=csv';
-
         const eventList = document.getElementById('event-list');
         const eventDialog = document.getElementById('event-dialog');
         const closeDialogButton = document.getElementById('event-dialog-close');
@@ -190,12 +174,45 @@
         const dialogDate = document.getElementById('event-dialog-date');
         const dialogDescription = document.getElementById('event-dialog-description');
         const sheetFrame = document.getElementById('event-sheet-frame');
-        const sheetFrameWrap = document.getElementById('event-sheet-frame-wrap');
-        const sheetLoading = document.getElementById('event-sheet-loading');
         const sheetMessage = document.getElementById('event-sheet-message');
         const sheetReadonlyNote = document.getElementById('event-sheet-readonly');
         const sheetOpenLink = document.getElementById('event-sheet-open');
         let previouslyFocusedElement;
+
+        function parseCsv(csvText) {
+            const rows = [];
+            let row = [];
+            let field = '';
+            let insideQuotes = false;
+
+            for (let index = 0; index < csvText.length; index += 1) {
+                const character = csvText[index];
+
+                if (character === '"') {
+                    if (insideQuotes && csvText[index + 1] === '"') {
+                        field += '"';
+                        index += 1;
+                    } else {
+                        insideQuotes = !insideQuotes;
+                    }
+                } else if (character === ',' && !insideQuotes) {
+                    row.push(field);
+                    field = '';
+                } else if ((character === '\n' || character === '\r') && !insideQuotes) {
+                    if (character === '\r' && csvText[index + 1] === '\n') index += 1;
+                    row.push(field);
+                    if (row.some(value => value.trim() !== '')) rows.push(row);
+                    row = [];
+                    field = '';
+                } else {
+                    field += character;
+                }
+            }
+
+            row.push(field);
+            if (row.some(value => value.trim() !== '')) rows.push(row);
+            return rows;
+        }
 
         function parseEventDate(value) {
             const trimmedValue = value.trim();
@@ -214,54 +231,13 @@
             return Number.isNaN(timestamp) ? null : new Date(timestamp);
         }
 
-        function parseCsv(csvText) {
-            const rows = [];
-            let row = [];
-            let field = '';
-            let insideQuotes = false;
-
-            for (let index = 0; index < csvText.length; index += 1) {
-                const character = csvText[index];
-
-                if (character === '"') {
-                    if (insideQuotes && csvText[index + 1] === '"') {
-                        field += '"';
-                        index += 1;
-                    } else if (insideQuotes) {
-                        insideQuotes = false;
-                    } else if (field.length === 0) {
-                        insideQuotes = true;
-                    } else {
-                        throw new Error('CSV contains an unexpected quote.');
-                    }
-                } else if (character === ',' && !insideQuotes) {
-                    row.push(field);
-                    field = '';
-                } else if ((character === '\n' || character === '\r') && !insideQuotes) {
-                    if (character === '\r' && csvText[index + 1] === '\n') index += 1;
-                    row.push(field);
-                    if (row.some(value => value.trim() !== '')) rows.push(row);
-                    row = [];
-                    field = '';
-                } else {
-                    field += character;
-                }
-            }
-
-            if (insideQuotes) throw new Error('CSV contains an unterminated quoted field.');
-            row.push(field);
-            if (row.some(value => value.trim() !== '')) rows.push(row);
-
-            return rows;
-        }
-
         function getSheetEmbedUrl(embedValue) {
             const embedMarkup = new DOMParser().parseFromString(embedValue, 'text/html');
             const source = embedMarkup.querySelector('iframe')?.getAttribute('src') || embedValue.trim();
 
             try {
                 const url = new URL(source);
-                if (url.protocol !== 'https:' || !url.hostname || url.username || url.password) return '';
+                if (url.protocol !== 'https:' || url.hostname !== 'docs.google.com') return '';
                 return url.href;
             } catch {
                 return '';
@@ -281,22 +257,17 @@
             dialogDescription.textContent = eventDetails.description;
 
             const sheetUrl = getSheetEmbedUrl(eventDetails.link);
-            sheetFrameWrap.hidden = !sheetUrl;
-            sheetLoading.hidden = !sheetUrl;
+            const canEditSheet = sheetUrl.includes('/edit');
+            sheetFrame.hidden = !sheetUrl;
             sheetMessage.hidden = Boolean(sheetUrl);
-            sheetReadonlyNote.hidden = !sheetUrl;
+            sheetReadonlyNote.hidden = !sheetUrl || canEditSheet;
             sheetOpenLink.hidden = !sheetUrl;
             if (sheetUrl) {
                 sheetOpenLink.href = sheetUrl;
-                sheetFrame.onload = () => {
-                    sheetLoading.hidden = true;
-                };
-                sheetFrame.src = sheetUrl;
             } else {
                 sheetOpenLink.removeAttribute('href');
-                sheetFrame.onload = null;
-                sheetFrame.removeAttribute('src');
             }
+            if (sheetUrl) sheetFrame.src = sheetUrl;
 
             eventDialog.hidden = false;
             eventDialog.setAttribute('aria-hidden', 'false');
@@ -310,10 +281,6 @@
         function closeEventDialog() {
             eventDialog.hidden = true;
             eventDialog.setAttribute('aria-hidden', 'true');
-            sheetFrame.onload = null;
-            sheetFrame.removeAttribute('src');
-            sheetFrameWrap.hidden = true;
-            sheetLoading.hidden = true;
             document.body.classList.remove('event-dialog-open');
             document.querySelectorAll('body > header, body > section').forEach(element => {
                 element.inert = false;
@@ -366,13 +333,13 @@
             }
         }
 
-        async function loadUpcomingEvents() {
-            try {
-                const response = await fetch(csvUrl);
+        fetch(csvUrl)
+            .then(response => {
                 if (!response.ok) throw new Error(`Request failed: ${response.status}`);
-
-                const csvText = (await response.text()).replace(/^\uFEFF/, '');
-                const rows = parseCsv(csvText);
+                return response.text();
+            })
+            .then(csvText => {
+                const rows = parseCsv(csvText.replace(/^\uFEFF/, ''));
                 const now = Date.now();
                 const events = rows.slice(1)
                     .map(row => ({
@@ -383,20 +350,18 @@
                     }))
                     .filter(event => event.date && event.date.getTime() > now && event.name)
                     .sort((first, second) => first.date - second.date)
-                    .slice(0, 6);
+                    .slice(0, 3);
 
                 renderEvents(events);
-            } catch (error) {
+            })
+            .catch(error => {
                 console.error('Unable to load upcoming events:', error);
                 eventList.setAttribute('aria-busy', 'false');
                 const message = document.createElement('p');
                 message.className = 'event-list-message';
                 message.textContent = 'Upcoming events could not be loaded right now.';
                 eventList.replaceChildren(message);
-            }
-        }
-
-        loadUpcomingEvents();
+            });
 
         closeDialogButton.addEventListener('click', closeEventDialog);
         backdropButton.addEventListener('click', closeEventDialog);
@@ -407,6 +372,36 @@
             } else if (event.key === 'Tab') {
                 event.preventDefault();
                 closeDialogButton.focus();
+            }
+        });
+
+        const offPanelSequence = [
+            'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+            'ArrowLeft', 'ArrowLeft', 'k', 'r', '6', '7'
+        ];
+        let offPanelSequenceProgress = 0;
+
+        document.addEventListener('keydown', event => {
+            const target = event.target;
+            if (
+                event.repeat ||
+                event.altKey ||
+                event.ctrlKey ||
+                event.metaKey ||
+                (target instanceof HTMLElement &&
+                    (target.isContentEditable || target.matches('input, textarea, select')))
+            ) {
+                return;
+            }
+
+            const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+            if (key === offPanelSequence[offPanelSequenceProgress]) {
+                offPanelSequenceProgress += 1;
+                if (offPanelSequenceProgress === offPanelSequence.length) {
+                    window.location.href = '../off_panel/';
+                }
+            } else {
+                offPanelSequenceProgress = key === offPanelSequence[0] ? 1 : 0;
             }
         });
     </script>
