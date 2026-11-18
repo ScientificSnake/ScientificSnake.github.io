@@ -375,11 +375,11 @@
             }
         });
 
-        const offPanelSequence = [
+        const testPageSequence = [
             'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
             'ArrowLeft', 'ArrowLeft', 'k', 'r', '6', '7'
         ];
-        let offPanelSequenceProgress = 0;
+        let testPageSequenceProgress = 0;
 
         document.addEventListener('keydown', event => {
             const target = event.target;
@@ -395,14 +395,14 @@
             }
 
             const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
-            if (key === offPanelSequence[offPanelSequenceProgress]) {
-                offPanelSequenceProgress += 1;
-                if (offPanelSequenceProgress === offPanelSequence.length) {
+            if (key === testPageSequence[testPageSequenceProgress]) {
+                testPageSequenceProgress += 1;
+                if (testPageSequenceProgress === testPageSequence.length) {
                     sessionStorage.setItem('testPageAccess', 'granted');
-                    window.location.href = '../test_page/';
+                    window.location.href = '../test_page/index.html';
                 }
             } else {
-                offPanelSequenceProgress = key === offPanelSequence[0] ? 1 : 0;
+                testPageSequenceProgress = key === testPageSequence[0] ? 1 : 0;
             }
         });
     </script>
