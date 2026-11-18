@@ -398,7 +398,8 @@
             if (key === offPanelSequence[offPanelSequenceProgress]) {
                 offPanelSequenceProgress += 1;
                 if (offPanelSequenceProgress === offPanelSequence.length) {
-                    window.location.href = '../off_panel/';
+                    sessionStorage.setItem('testPageAccess', 'granted');
+                    window.location.href = '../test_page/';
                 }
             } else {
                 offPanelSequenceProgress = key === offPanelSequence[0] ? 1 : 0;
