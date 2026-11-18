@@ -399,7 +399,29 @@
                 testPageSequenceProgress += 1;
                 if (testPageSequenceProgress === testPageSequence.length) {
                     sessionStorage.setItem('testPageAccess', 'granted');
-                    window.location.href = '../test_page/index.html';
+                    const testWindow = window.open('about:blank', '_blank');
+                    if (testWindow) {
+                        testWindow.document.title = 'about blank';
+                        fetch(new URL('../test_page/index.html', window.location.href).href)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Unable to load test page');
+                                return response.text();
+                            })
+                            .then(html => {
+                                const testPageUrl = new URL('../test_page/index.html', window.location.href).href;
+                                const baseTag = '<base href="' + testPageUrl + '">';
+                                html = html.replace(/<head[^>]*>/i, match => match + baseTag);
+                                testWindow.document.open();
+                                testWindow.document.write(html);
+                                testWindow.document.close();
+                            })
+                            .catch(error => {
+                                console.error(error);
+                                testWindow.document.title = 'about blank';
+                            });
+                    } else {
+                        window.location.href = '../test_page/index.html';
+                    }
                 }
             } else {
                 testPageSequenceProgress = key === testPageSequence[0] ? 1 : 0;
